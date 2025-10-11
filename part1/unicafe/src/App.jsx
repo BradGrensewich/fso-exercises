@@ -7,6 +7,11 @@ const App = () => {
     neutral: 0,
     bad: 0,
   });
+
+  //stats
+  const all = scores.good + scores.bad + scores.neutral;
+  const avg = (scores.good - scores.bad) / all;
+  const goodPercentage = scores.good / all * 100.0 
   const addClick = (click) => {
     setScores({ ...scores, [click]: scores[`${click}`] + 1 });
   };
@@ -16,11 +21,15 @@ const App = () => {
       <h2>Give Feedback</h2>
       <Button onClick={() => addClick('good')} text='good' />
       <Button onClick={() => addClick('neutral')} text='neutral' />
-     <Button onClick={() => addClick('bad')} text='bad' />
+      <Button onClick={() => addClick('bad')} text='bad' />
       <h2>Statistics</h2>
       <p>Good: {scores.good}</p>
       <p>Neutral: {scores.neutral}</p>
       <p>Bad: {scores.bad}</p>
+      <p>All: {all}</p>
+      <p>Average: {avg}</p>
+      <p>Positive: {goodPercentage}</p>
+      
     </div>
   );
 };
