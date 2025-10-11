@@ -3,6 +3,14 @@ const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
 const Statistics = ({ scores }) => {
   const all = scores.good + scores.bad + scores.neutral;
+  if (all === 0) {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <p>No feedback given</p>
+      </div>
+    );
+  }
   const avg = (scores.good - scores.bad) / all;
   const goodPercentage = (scores.good / all) * 100.0;
   return (
