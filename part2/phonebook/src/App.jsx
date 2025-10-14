@@ -1,55 +1,7 @@
 import { useState } from 'react';
-
-const FormInput = ({ text, onChange, value }) => {
-  return (
-    <div>
-      {text}: <input onChange={onChange} value={value} />
-    </div>
-  );
-};
-
-const Form = ({ onAddNewPerson }) => {
-  const [newName, setNewName] = useState('');
-  const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
-  const [newNumber, setNewNumber] = useState('');
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
-  };
-  const addPerson = (event) => {
-    event.preventDefault();
-    onAddNewPerson({ name: newName, number: newNumber });
-    setNewName('');
-    setNewNumber('');
-  };
-
-  return (
-    <form>
-      <div>
-        <FormInput text='name' onChange={handleNameChange} value={newName} />
-        <FormInput
-          text='number'
-          onChange={handleNumberChange}
-          value={newNumber}
-        />
-      </div>
-      <div>
-        <button type='submit' onClick={addPerson}>
-          add
-        </button>
-      </div>
-    </form>
-  );
-};
-
-const PersonItem = ({ person }) => {
-  return (
-    <li>
-      {person.name} : {person.number}
-    </li>
-  );
-};
+import Form from './components/Form';
+import PersonList from './components/PersonList';
+import Filter from './components/Filter';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -74,23 +26,18 @@ const App = () => {
   const filteredPersons =
     filter.length < 1
       ? persons
-      : persons.filter((p) => p.name.toLowerCase().includes(filter.toLocaleLowerCase()));
+      : persons.filter((p) =>
+          p.name.toLowerCase().includes(filter.toLocaleLowerCase()),
+        );
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter:
-        <input type='text' value={filter} onChange={handleFilterChange} />
-      </div>
+      <Filter value={filter} onChange={handleFilterChange} />
       <h2>Add new</h2>
       <Form onAddNewPerson={handleNewPersonAdded} />
       <h2>Numbers</h2>
-      <ul>
-        {filteredPersons.map((p) => (
-          <PersonItem key={p.name} person={p} />
-        ))}
-      </ul>
+      <PersonList persons={filteredPersons} />
     </div>
   );
 };
