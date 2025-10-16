@@ -19,8 +19,9 @@ const App = () => {
   }, []);
 
   const handleNewPersonAdded = (newPerson) => {
-    if (persons.map((p) => p.name).includes(newPerson.name)) {
-      alert(`${newPerson.name} is already added to phonebook`);
+    const oldPerson = persons.find((p) => p.name === newPerson.name);
+    if (oldPerson) {
+      updatePerson(oldPerson, newPerson);
       return;
     }
     PersonService.create(newPerson)
@@ -30,6 +31,20 @@ const App = () => {
       .catch(() => {
         alert('error adding new person');
       });
+  };
+
+  const updatePerson = (oldPerson, newPerson) => {
+    if (
+      window.confirm(
+        `${newPerson.name} is already in phonebook. Change number?`,
+      )
+    ) {
+      PersonService.update(newPerson, oldPerson.id).then((savedPerson) => {
+        setPersons(
+          persons.map((p) => (p.id === savedPerson.id ? savedPerson : p)),
+        );
+      });
+    }
   };
 
   const handleRemovePerson = (id) => {
