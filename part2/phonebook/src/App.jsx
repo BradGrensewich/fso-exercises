@@ -23,24 +23,31 @@ const App = () => {
       alert(`${newPerson.name} is already added to phonebook`);
       return;
     }
-    PersonService.create(newPerson).then(p => {
-      setPersons(persons.concat(p))
-    }).catch(() => {
-      alert("error adding new person")
-    })
-    
+    PersonService.create(newPerson)
+      .then((p) => {
+        setPersons(persons.concat(p));
+      })
+      .catch(() => {
+        alert('error adding new person');
+      });
+  };
+
+  const handleRemovePerson = (id) => {
+    if (!window.confirm('are you sure you want to delete?')) {
+      return;
+    }
+    PersonService.remove(id)
+      .then((res) => {
+        setPersons(persons.filter((p) => p.id != res.id));
+      })
+      .catch(() => {
+        alert('Error removing person');
+      });
   };
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
-
-  const filteredPersons =
-    filter.length < 1
-      ? persons
-      : persons.filter((p) =>
-          p.name.toLowerCase().includes(filter.toLocaleLowerCase()),
-        );
 
   return (
     <div>
@@ -49,7 +56,11 @@ const App = () => {
       <h2>Add new</h2>
       <Form onAddNewPerson={handleNewPersonAdded} />
       <h2>Numbers</h2>
-      <PersonList persons={filteredPersons} />
+      <PersonList
+        persons={persons}
+        filter={filter}
+        onRemovePerson={handleRemovePerson}
+      />
     </div>
   );
 };
