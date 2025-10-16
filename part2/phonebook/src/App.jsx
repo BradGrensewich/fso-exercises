@@ -2,26 +2,35 @@ import { useEffect, useState } from 'react';
 import Form from './components/Form';
 import PersonList from './components/PersonList';
 import Filter from './components/Filter';
-import axios from 'axios';
+import PersonService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data)
-    })
-  }, [])
+    PersonService.getAll()
+      .then((initialPersons) => {
+        setPersons(initialPersons);
+      })
+      .catch(() => {
+        alert('Issue fetching persons');
+      });
+  }, []);
 
   const handleNewPersonAdded = (newPerson) => {
     if (persons.map((p) => p.name).includes(newPerson.name)) {
       alert(`${newPerson.name} is already added to phonebook`);
       return;
     }
-    setPersons(persons.concat(newPerson));
+    PersonService.create(newPerson).then(p => {
+      setPersons(persons.concat(p))
+    }).catch(() => {
+      alert("error adding new person")
+    })
+    
   };
-  
+
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
