@@ -4,9 +4,30 @@ import PersonList from './components/PersonList';
 import Filter from './components/Filter';
 import PersonService from './services/persons';
 
+const Notification = ({notification}) => {
+  if (!notification) return null
+  const notificationStyles = {
+  color: 'green',
+  background: 'lightgrey',
+  fontSize: '20px',
+  borderStyle: 'solid',
+  borderRadius: '5px',
+  padding: '10px',
+  marginBottom: '10px'
+
+  }
+  return (
+    <div style={notificationStyles}>
+      {notification}
+    </div>
+  )
+
+}
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [filter, setFilter] = useState('');
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     PersonService.getAll()
@@ -25,8 +46,9 @@ const App = () => {
       return;
     }
     PersonService.create(newPerson)
-      .then((p) => {
-        setPersons(persons.concat(p));
+      .then((savedPerson) => {
+        setPersons(persons.concat(savedPerson));
+        showNotification(`${savedPerson.name}added to phonebook`)
       })
       .catch(() => {
         alert('error adding new person');
@@ -43,6 +65,7 @@ const App = () => {
         setPersons(
           persons.map((p) => (p.id === savedPerson.id ? savedPerson : p)),
         );
+        showNotification(`${savedPerson.name}'s number updated in phonebook`)
       });
     }
   };
@@ -64,9 +87,15 @@ const App = () => {
     setFilter(event.target.value);
   };
 
+  const showNotification = (message) => {
+    setNotification(message)
+    setTimeout(() => setNotification(null), 5000)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notification}/>
       <Filter value={filter} onChange={handleFilterChange} />
       <h2>Add new</h2>
       <Form onAddNewPerson={handleNewPersonAdded} />
