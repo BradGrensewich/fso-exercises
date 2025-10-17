@@ -1,13 +1,13 @@
-const CountryListItem = ({country}) => {
+const CountryListItem = ({country, onSelect}) => {
     return(
-        <li>{country.name.common}</li>
+        <li>{country.name.common} <button onClick={onSelect}>show</button></li>
     )
 }
 
-const CountryList = ({countries}) => {
+const CountryList = ({countries, onCountrySelected}) => {
     return (
         <ul>
-            {countries.map(country => <CountryListItem key={country.tld[0]} country={country}/>)}
+            {countries.map(country => <CountryListItem key={country.tld[0]} country={country} onSelect={() => onCountrySelected(country.tld[0])}/>)}
         </ul>
     )
 }
