@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 
-const persons = [
+app.use(express.json());
+let persons = [
   {
     id: '1',
     name: 'Arto Hellas',
@@ -23,6 +24,10 @@ const persons = [
     number: '39-23-6423122',
   },
 ];
+
+const createId = () => {
+    return Math.floor(Math.random() * 9999);
+}
 
 const PORT = 3001;
 const baseUrl = `http://localhost:${PORT}`;
@@ -48,8 +53,14 @@ app.get('/api/persons/:id', (req, res) => {
   if (!person) {
     return res.status(404).send();
   }
-
   res.json(person);
+});
+
+app.post('/api/persons', (req, res) => {
+    const person = {...req.body, id: createId()}
+    console.log(person)
+    persons = persons.concat(person)
+    return res.status(201).json(person)
 });
 
 app.listen(PORT, () => {
