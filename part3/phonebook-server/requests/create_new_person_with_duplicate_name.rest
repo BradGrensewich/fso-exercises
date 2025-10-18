@@ -6,19 +6,11 @@ Content-Type: application/json
     "number": 5555555555
 }
 
-//bad requests
 ###
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
-{     
-    "number": 123322131  
-}
-
-###
-POST http://localhost:3001/api/persons
-Content-Type: application/json
-
-{     
-    "name": "no name"  
+{
+    "name": "Test user",
+    "number": 5555555555
 }

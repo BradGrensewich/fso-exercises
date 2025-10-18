@@ -62,9 +62,14 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).send()
 });
 
-app.post('/api/persons', (req, res) => {
-    const person = {...req.body, id: createId()}
-    console.log(person)
+app.post('/api/persons', (req, res) => {    
+    const person = {...req.body, id: createId()}    
+    if (!person.name || !person.number) {
+        return res.status(400).json({error: 'new persons must have a name and a number'})
+    }    
+    if (persons.map(p => p.name).includes(person.name)) {
+         return res.status(400).json({error: 'name must be unique'})
+    }
     persons = persons.concat(person)
     return res.status(201).json(person)
 });
