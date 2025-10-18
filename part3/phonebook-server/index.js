@@ -30,14 +30,26 @@ const baseUrl = `http://localhost:${PORT}`;
 app.get('/', (req, res) => {
   res.send('hello world');
 });
+
 app.get('/info', (req, res) => {
   const html = `<div>phonebook has info for ${persons.length} people</div>
   <div>${new Date()}</div>`;
-
   res.send(html);
 });
+
 app.get('/api/persons', (req, res) => {
   res.json(persons);
+});
+
+app.get('/api/persons/:id', (req, res) => {
+  const id = req.params.id;
+  const person = persons.find((p) => (p.id === id));
+  console.log(person);
+  if (!person) {
+    return res.status(404).send();
+  }
+
+  res.json(person);
 });
 
 app.listen(PORT, () => {
