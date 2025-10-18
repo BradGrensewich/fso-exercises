@@ -28,8 +28,14 @@ const PORT = 3001;
 const baseUrl = `http://localhost:${PORT}`;
 
 app.get('/', (req, res) => {
-    res.send('hello world')
-})
+  res.send('hello world');
+});
+app.get('/info', (req, res) => {
+  const html = `<div>phonebook has info for ${persons.length} people</div>
+  <div>${new Date()}</div>`;
+
+  res.send(html);
+});
 app.get('/api/persons', (req, res) => {
   res.json(persons);
 });
