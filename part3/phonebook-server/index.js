@@ -35,10 +35,6 @@ const createId = () => {
     return Math.floor(Math.random() * 9999);
 }
 
-app.get('/', (req, res) => {
-  res.send('hello world');
-});
-
 app.get('/info', (req, res) => {
   const html = `<div>phonebook has info for ${persons.length} people</div>
   <div>${new Date()}</div>`;
