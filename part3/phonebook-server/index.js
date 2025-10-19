@@ -37,9 +37,6 @@ const createId = () => {
     return Math.floor(Math.random() * 9999);
 }
 
-const PORT = 3001;
-const baseUrl = `http://localhost:${PORT}`;
-
 app.get('/', (req, res) => {
   res.send('hello world');
 });
@@ -82,6 +79,7 @@ app.post('/api/persons', (req, res) => {
     return res.status(201).json(person)
 });
 
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-  console.log(`Server running on ${baseUrl}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
