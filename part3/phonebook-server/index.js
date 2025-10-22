@@ -7,7 +7,7 @@ const app = express();
 app.use(express.static('dist'));
 app.use(express.json());
 
-morgan.token('body', (req, res) => {
+morgan.token('body', (req) => {
   return JSON.stringify(req.body);
 });
 app.use(
@@ -41,12 +41,12 @@ app.get('/api/persons/:id', (req, res, next) => {
         return res.json(person);
       }
     })
-    .catch((error) => next(error));  
+    .catch((error) => next(error));
 });
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
-    .then((result) => {
+    .then(() => {
       return res.status(204).send();
     })
     .catch((error) => next(error));
@@ -86,8 +86,8 @@ const errorHandler = (error, req, res, next) => {
   console.error(error.message);
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' });
-  }  else if (error.name === 'ValidationError') {    
-  return res.status(400).json({ error: error.message })  
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message });
   }
   next(error);
 };
