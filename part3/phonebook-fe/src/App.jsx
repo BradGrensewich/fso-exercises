@@ -31,8 +31,9 @@ const App = () => {
         setPersons(persons.concat(savedPerson));
         showNotification(`${savedPerson.name}added to phonebook`);
       })
-      .catch(() => {
-        showNotification(`Error adding ${newPerson.name} to database`, true);
+      .catch((error) => {
+        console.log(error)
+        showNotification(error.response.data.error,'true');
       });
   };
 
@@ -49,9 +50,9 @@ const App = () => {
           );
           showNotification(`${savedPerson.name}'s number updated in phonebook`);
         })
-        .catch(() => {
+        .catch((error) => {
           showNotification(
-            `Error updating ${newPerson.name} in database`,
+            error.message,
             true,
           );
         });
