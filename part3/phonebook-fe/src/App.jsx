@@ -52,7 +52,7 @@ const App = () => {
         })
         .catch((error) => {
           showNotification(
-            error.message,
+            error.response.data.error,
             true,
           );
         });
