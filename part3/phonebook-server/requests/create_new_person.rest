@@ -6,6 +6,15 @@ Content-Type: application/json
     "number": 5555555555
 }
 
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Another test user",
+    "number": 1234678
+}
+
 //bad requests
 ###
 POST http://localhost:3001/api/persons
