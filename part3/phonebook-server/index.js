@@ -14,9 +14,6 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body'),
 );
 
-const createId = () => {
-  return Math.floor(Math.random() * 9999);
-};
 
 app.get('/info', (req, res) => {
   const html = `<div>phonebook has info for ${persons.length} people</div>
@@ -43,9 +40,9 @@ app.get('/api/persons/:id', (req, res) => {
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-  const id = req.params.id;
-  persons = persons.filter((p) => p.id !== id);
-  res.status(204).send();
+  Person.findByIdAndDelete(req.params.id).then(result => {
+    return res.status(204).send()
+  }).catch(error => next(error))
 });
 
 
