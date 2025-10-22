@@ -14,7 +14,6 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body'),
 );
 
-
 app.get('/info', (req, res) => {
   const html = `<div>phonebook has info for ${persons.length} people</div>
   <div>${new Date()}</div>`;
@@ -40,11 +39,12 @@ app.get('/api/persons/:id', (req, res) => {
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-  Person.findByIdAndDelete(req.params.id).then(result => {
-    return res.status(204).send()
-  }).catch(error => next(error))
+  Person.findByIdAndDelete(req.params.id)
+    .then((result) => {
+      return res.status(204).send();
+    })
+    .catch((error) => next(error));
 });
-
 
 app.post('/api/persons', (req, res) => {
   const { name, number } = req.body;
@@ -60,6 +60,20 @@ app.post('/api/persons', (req, res) => {
       return res.status(201).json(savedPerson);
     })
     .catch((error) => next(error));
+});
+
+app.put('/api/persons/:id', (req, res) => {
+  const { name, number } = req.body;
+  Person.findById(req.params.id).then((person) => {
+    person.name = name;
+    person.number = number;
+    person
+      .save()
+      .then((updatedPerson) => {
+        return res.json(updatedPerson);
+      })
+      .catch((error) => next(error));
+  });
 });
 
 const errorHandler = (error, req, res, next) => {
