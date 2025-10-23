@@ -65,3 +65,19 @@ describe('most blogs', () => {
     assert.deepStrictEqual(result , {author: "Robert C. Martin", blogs: 3});
   });
 });
+
+describe('most likes', () => {
+  test('when list has only one blog, returns its author and count of 1', () => {
+    const result = listHelper.mostLikes(listWithOneBlog);
+    assert.deepStrictEqual(result, {author: 'Edsger W. Dijkstra', likes: 5});
+  });
+
+  test('when list has no blogs, is undefined', () => {
+    const result = listHelper.mostLikes([]);
+    assert.deepStrictEqual(result, undefined);
+  });
+  test('when list has many blogs, returns correct  author and count', () => {
+    const result = listHelper.mostLikes(testBlogs)
+    assert.deepStrictEqual(result , {author: "Edsger W. Dijkstra", likes: 17});
+  });
+});
