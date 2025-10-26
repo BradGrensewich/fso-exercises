@@ -56,9 +56,29 @@ describe('when there are already blogs in the database', () => {
 
         const db = await testHelper.blogsInDb();
         assert.strictEqual(db.length, originalLength);
-
-        
       });
+  });
+  describe('PUT requests', () => {
+    test.only('succeed with correct status code when changing likes', async () => {
+      const blogs = await testHelper.blogsInDb();
+      const blogToUpdate = { ...blogs[0], likes: blogs[0].likes + 1 };
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(blogToUpdate)
+        .expect(200);
+
+      const db = await testHelper.blogsInDb();
+      const updatedBlog = db.find((b) => b.id === blogToUpdate.id);
+      assert.deepStrictEqual(blogToUpdate, updatedBlog);
+    });
+    
+     test.only('returns 404 when attempting update on blog not in DB', async () => {
+      const nonExistingId = await testHelper.nonExistingId()      
+      await api
+        .put(`/api/blogs/${nonExistingId}`)
+        .send({author: 'test', url: 'test.com', title: 'test'})
+        .expect(404);
+    });
   });
 });
 
