@@ -36,6 +36,20 @@ describe('GET requests on /api/blogs', () => {
   });
 });
 
+describe('POST requests on /api/blogs', () => {
+  test('adds blog to database', async () => {
+    await api
+      .post('/api/blogs')
+      .send(testHelper.singleValidBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const db = await testHelper.blogsInDb();
+    assert.strictEqual(db.length, testHelper.testBlogs.length + 1);
+    assert(db.map((b) => b.title).includes(testHelper.singleValidBlog.title));
+  });
+});
+
 after(async () => {
   mongoose.connection.close();
 });
