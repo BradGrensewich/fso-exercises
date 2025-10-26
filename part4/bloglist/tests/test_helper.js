@@ -7,6 +7,19 @@ const singleValidBlog = {
   likes: 5,
 };
 
+const nonExistingId = async () => {
+  const blog = new Blog({
+    title: 'will remove',
+    author: 'will remove',
+    url: 'https://test.com/',
+    likes: 5,
+  });
+  await blog.save();
+  await blog.deleteOne();
+
+  return blog._id.toString();
+};
+
 const testBlogs = [
   {
     title: 'React patterns',
@@ -60,4 +73,10 @@ const blogsInDb = async () => {
   return blogs.map((b) => b.toJSON());
 };
 
-module.exports = { testBlogs, listWithOneBlog, singleValidBlog, blogsInDb };
+module.exports = {
+  testBlogs,
+  listWithOneBlog,
+  singleValidBlog,
+  blogsInDb,
+  nonExistingId,
+};
