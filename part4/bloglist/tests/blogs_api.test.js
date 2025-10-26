@@ -51,7 +51,6 @@ describe('POST requests on /api/blogs', () => {
 
   test('saves a blog with zero likes if likes property is not provided', async () => {
     const { likes, ...blogWithNoLikesProperty } = testHelper.singleValidBlog;
-    console.log(blogWithNoLikesProperty);
     const returnedBlog = await api
       .post('/api/blogs')
       .send(blogWithNoLikesProperty)
@@ -61,6 +60,19 @@ describe('POST requests on /api/blogs', () => {
     const db = await testHelper.blogsInDb();
     const savedBlogInDb = db.find((b) => b.id == returnedBlog.body.id);
     assert.strictEqual(savedBlogInDb.likes, 0);
+  });
+
+  test('responds with 400 and does not save when title property not provided', async () => {
+    const { title, ...blogWithNoTitleProperty } = testHelper.singleValidBlog;
+    await api.post('/api/blogs').send(blogWithNoTitleProperty).expect(400);
+    const db = await testHelper.blogsInDb();
+    assert.strictEqual(db.length, testHelper.testBlogs.length);
+  });
+  test('responds with 400 and does not save when url property not provided', async () => {
+    const { url, ...blogWithNoUrlProperty } = testHelper.singleValidBlog;
+    await api.post('/api/blogs').send(blogWithNoUrlProperty).expect(400);
+    const db = await testHelper.blogsInDb();
+    assert.strictEqual(db.length, testHelper.testBlogs.length);
   });
 });
 
