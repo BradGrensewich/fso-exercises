@@ -48,6 +48,20 @@ describe('POST requests on /api/blogs', () => {
     assert.strictEqual(db.length, testHelper.testBlogs.length + 1);
     assert(db.map((b) => b.title).includes(testHelper.singleValidBlog.title));
   });
+
+  test('saves a blog with zero likes if likes property is not provided', async () => {
+    const { likes, ...blogWithNoLikesProperty } = testHelper.singleValidBlog;
+    console.log(blogWithNoLikesProperty);
+    const returnedBlog = await api
+      .post('/api/blogs')
+      .send(blogWithNoLikesProperty)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const db = await testHelper.blogsInDb();
+    const savedBlogInDb = db.find((b) => b.id == returnedBlog.body.id);
+    assert.strictEqual(savedBlogInDb.likes, 0);
+  });
 });
 
 after(async () => {

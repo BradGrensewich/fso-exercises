@@ -1,9 +1,11 @@
-const Blog = require('../models/blog')
+const Blog = require('../models/blog');
 
-const singleValidBlog = { title: 'Test blog',
-    author: 'Test author',
-    url: 'https://test.com/',
-    likes: 5,}
+const singleValidBlog = {
+  title: 'Test blog',
+  author: 'Test author',
+  url: 'https://test.com/',
+  likes: 5,
+};
 
 const testBlogs = [
   {
@@ -54,8 +56,8 @@ const listWithOneBlog = [
 ];
 
 const blogsInDb = async () => {
-    const blogs = await Blog.find({})
-    return blogs.map(b => b.toJSON())
-}
+  const blogs = await Blog.find({});
+  return blogs.map((b) => b.toJSON());
+};
 
 module.exports = { testBlogs, listWithOneBlog, singleValidBlog, blogsInDb };
