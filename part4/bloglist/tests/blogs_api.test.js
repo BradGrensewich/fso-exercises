@@ -24,6 +24,16 @@ describe('GET requests on /api/blogs', () => {
       response.body.map((b) => b.title).includes(testHelper.testBlogs[0].title),
     );
   });
+  test('return blogs with proper id format and no versioning', async () => {
+    const response = await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+    const blog = response.body[0];
+    assert(blog.id);
+    assert(!blog._id);
+    assert(!blog.__v);
+  });
 });
 
 after(async () => {
