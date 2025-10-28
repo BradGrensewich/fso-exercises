@@ -1,4 +1,5 @@
 const Blog = require('../models/blog');
+const User = require('../models/user')
 
 const singleValidBlog = {
   title: 'Test blog',
@@ -6,6 +7,12 @@ const singleValidBlog = {
   url: 'https://test.com/',
   likes: 5,
 };
+
+const singleValidUser = {
+  username: 'Create me',
+  password: 'secret',
+  name: 'nameless'
+}
 
 const nonExistingId = async () => {
   const blog = new Blog({
@@ -59,6 +66,11 @@ const testBlogs = [
   },
 ];
 
+const testUsers = [
+  { name: 'number one', username: 'test user 1', passwordHash: 'bskcbscjksdnckjsnc' },
+  { name: 'number two', username: 'test user 2', passwordHash: 'ksdjnckjsdcksdcnss' },
+];
+
 const listWithOneBlog = [
   {
     title: 'Go To Statement Considered Harmful',
@@ -72,6 +84,10 @@ const blogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map((b) => b.toJSON());
 };
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map((u) => u.toJSON());
+};
 
 module.exports = {
   testBlogs,
@@ -79,4 +95,7 @@ module.exports = {
   singleValidBlog,
   blogsInDb,
   nonExistingId,
+  testUsers,
+  singleValidUser,
+  usersInDb
 };
