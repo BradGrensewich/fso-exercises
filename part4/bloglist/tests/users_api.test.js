@@ -62,11 +62,17 @@ describe('when there are already users in DB', () => {
       const db = await testHelper.usersInDb();
       assert.strictEqual(db.length, testHelper.testUsers.length);
     });
-     test('responds with 400 and does not save when password property is below minimum allowed length', async () => {
-      const userWithShortPassword = {...testHelper.singleValidUser, password: 'ab'};
-      const response = await api.post('/api/users').send(userWithShortPassword).expect(400);
+    test('responds with 400 and does not save when password property is below minimum allowed length', async () => {
+      const userWithShortPassword = {
+        ...testHelper.singleValidUser,
+        password: 'ab',
+      };
+      const response = await api
+        .post('/api/users')
+        .send(userWithShortPassword)
+        .expect(400);
 
-       assert.strictEqual(
+      assert.strictEqual(
         response.body.error,
         'password must be at least 3 characters',
       );
@@ -83,6 +89,19 @@ describe('when there are already users in DB', () => {
       );
       const db = await testHelper.usersInDb();
       assert.strictEqual(db.length, testHelper.testUsers.length);
+    });
+  });
+});
+describe('when there is a single user in DB', () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
+    await api.post('/api/users').send(testHelper.singleValidUser);
+  });
+  describe('POST requests for login', () => {
+    test('succeed with correct credentials', async () => {
+      const user = testHelper.singleValidUser;
+      const response = await api.post('/api/login').send(user).expect(200);
+      assert(response.body.token);
     });
   });
 });

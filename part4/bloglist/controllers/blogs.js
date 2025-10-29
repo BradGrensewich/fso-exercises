@@ -1,17 +1,28 @@
 const blogsRouter = require('express').Router();
-const User = require('../models/user')
+const User = require('../models/user');
 const Blog = require('../models/blog');
+const { request } = require('express');
+const jwt = require('jsonwebtoken');
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user')
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
   return response.json(blogs);
 });
 
 blogsRouter.post('/', async (request, response) => {
-  const user = await User.findOne({})
-  const blog = new Blog({...request.body, user: user.id });
-  const saved = await blog.save();
-  return response.status(201).json(saved);
+  const decodedToken = jwt.decode(request.token, process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' });
+  }
+  const user = await User.findById(decodedToken.id);
+  if (!user) {
+    return response.status(400).json({ error: 'userId missing or not valid' });
+  }
+  const blog = new Blog({ ...request.body, user: user.id });
+  const savedBlog = await blog.save();
+  user.blogs = user.blogs.concat(savedBlog);
+  await user.save();
+  return response.status(201).json(savedBlog);
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
@@ -20,13 +31,13 @@ blogsRouter.delete('/:id', async (request, response) => {
 });
 
 blogsRouter.put('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id);  
+  const blog = await Blog.findById(request.params.id);
   if (!blog) {
     return response.status(404).end();
   }
 
   const { title, author, url, likes } = request.body;
-  
+
   blog.title = title;
   blog.author = author;
   blog.url = url;
