@@ -35,9 +35,11 @@ const errorHandler = (error, request, response, next) => {
 const userExtractor = (request, response, next) => {
   const authorization = request.get('authorization');  
   if (authorization && authorization.startsWith('Bearer ')) {
+    
     request.token = authorization.replace('Bearer ', '');
     decodedToken = jwt.decode(request.token, process.env.SECRET);
-    request.user = decodedToken  
+      request.user = decodedToken
+   
   } 
   next()
 };
