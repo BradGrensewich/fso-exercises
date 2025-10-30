@@ -1,4 +1,7 @@
 const UserInfo = ({ user, onLogout }) => {
+  if (!user) {
+    return null;
+  }
   return (
     <div>
       {user.username} is logged in

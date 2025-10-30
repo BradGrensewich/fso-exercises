@@ -2,7 +2,7 @@ import { useState } from 'react';
 import blogsService from '../services/blogs';
 import FormInput from './FormInput';
 
-const NewBlogForm = ({onCreateBlog}) => {
+const NewBlogForm = ({onCreateBlog, displayError}) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -17,7 +17,9 @@ const NewBlogForm = ({onCreateBlog}) => {
       setTitle('')
       setUrl('')
     } catch (error) {
-      console.error(error);
+      console.error(error)
+      displayError('failed to add blog')
+
     }
   };
   return (
