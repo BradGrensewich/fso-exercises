@@ -4,21 +4,26 @@ import BlogList from './components/BlogList';
 import LoginForm from './components/LoginForm';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchBlogs = async () => {
-      const blogs = await blogService.getAll();
-      setBlogs(blogs);
-    };
-    fetchBlogs();
+    const loggedInUser = window.localStorage.getItem('user');
+    if (loggedInUser) {
+      const existingUser = JSON.parse(loggedInUser);
+      setUser(existingUser);
+      blogService.setToken(existingUser.token);
+    }
   }, []);
+
+  const logout = () => {
+    setUser(null);
+    window.localStorage.clear();
+  };
 
   return (
     <>
       {!user && <LoginForm setUser={setUser} />}
-      {user && <BlogList blogs={blogs} />}
+      {user && <BlogList user={user} onLogout={logout} />}
     </>
   );
 };
