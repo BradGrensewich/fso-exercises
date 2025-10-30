@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import blogService from './services/blogs';
-import BlogList from './components/BlogList';
 import LoginForm from './components/LoginForm';
+import MainView from './components/MainView';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -23,7 +23,7 @@ const App = () => {
   return (
     <>
       {!user && <LoginForm setUser={setUser} />}
-      {user && <BlogList user={user} onLogout={logout} />}
+      {user && <MainView user={user} onLogout={logout} />}
     </>
   );
 };
