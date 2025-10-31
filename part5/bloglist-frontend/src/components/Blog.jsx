@@ -1,7 +1,7 @@
 import BlogInfo from './BlogInfo';
 import Toggleable from './Toggleable';
 
-const Blog = ({ blog, onAddLike }) => {
+const Blog = ({ blog, onAddLike, onDeleteBlog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,7 +14,7 @@ const Blog = ({ blog, onAddLike }) => {
     <li style={blogStyle}>
       {blog.title} {blog.author}
       <Toggleable buttonLabel='view' closeLabel='hide'>
-        <BlogInfo blog={blog} onAddLike={onAddLike}/>
+        <BlogInfo blog={blog} onAddLike={onAddLike} onDeleteBlog={onDeleteBlog} user={user}/>
       </Toggleable>
     </li>
   );

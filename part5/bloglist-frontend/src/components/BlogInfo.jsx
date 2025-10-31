@@ -1,12 +1,23 @@
-const BlogInfo = ({ blog, onAddLike }) => {
+const BlogInfo = ({ blog, onAddLike, onDeleteBlog, user }) => {
+  const ownedByUser = (user.id = blog.user.id);
+
+  const addLike = () => {
+    onAddLike(blog);
+  };
+
+  const deleteBlog = () => {
+    if (window.confirm(`Remove blog: "${blog.title}" by ${blog.author}?`)) {
+      onDeleteBlog(blog);
+    }
+  };
   return (
     <>
       <p>{blog.url}</p>
       <p>
-        likes: {blog.likes}{' '}
-        <button onClick={() => onAddLike(blog)}>like</button>
+        likes: {blog.likes} <button onClick={addLike}>like</button>
       </p>
       <p>added by: {blog.user.username}</p>
+      {ownedByUser && <button onClick={deleteBlog}>remove</button>}
     </>
   );
 };

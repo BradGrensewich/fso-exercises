@@ -4,7 +4,7 @@ import BlogList from './BlogList';
 import NewBlogForm from './NewBlogForm';
 import Toggleable from './Toggleable';
 
-const MainView = ({ displayMessage, displayError }) => {
+const MainView = ({ displayMessage, displayError, user }) => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
@@ -34,9 +34,21 @@ const MainView = ({ displayMessage, displayError }) => {
           b.id === updatedBlog.id ? { ...updatedBlog, user: blog.user } : b,
         ),
       );
+      displayMessage(`liked "${blog.title}" by ${blog.author}`);
     } catch (error) {
       console.error(error);
       displayError('error adding like to blog');
+    }
+  };
+
+  const handleDeleteBlog = async (blog) => {
+    try {
+      await blogsService.deleteBlog(blog);
+      setBlogs(blogs.filter((b) => b.id !== blog.id));
+      displayMessage(`successfully deleted "${blog.title}" by ${blog.author}`);
+    } catch (error) {
+      console.error(error);
+      displayError('error deleting blog from DB');
     }
   };
 
@@ -54,7 +66,12 @@ const MainView = ({ displayMessage, displayError }) => {
         />
       </Toggleable>
 
-      <BlogList blogs={blogs} onAddLike={handleAddLike} />
+      <BlogList
+        blogs={blogs}
+        onAddLike={handleAddLike}
+        onDeleteBlog={handleDeleteBlog}
+        user={user}
+      />
     </div>
   );
 };

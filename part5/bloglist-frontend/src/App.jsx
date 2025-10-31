@@ -43,7 +43,7 @@ const App = () => {
       <UserInfo user={user} onLogout={handleLogout} />
       <Notification notification={notification} />
       {!user && <LoginForm setUser={setUser} displayMessage={displayMessage} displayError={displayError}/>}
-      {user && <MainView displayMessage={displayMessage} displayError={displayError}/>}
+      {user && <MainView displayMessage={displayMessage} displayError={displayError} user={user}/>}
     </>
   );
 };
