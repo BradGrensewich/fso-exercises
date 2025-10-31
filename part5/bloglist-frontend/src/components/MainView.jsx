@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import blogService from '../services/blogs';
+import blogsService from '../services/blogs';
 import BlogList from './BlogList';
 import NewBlogForm from './NewBlogForm';
 import Toggleable from './Toggleable';
@@ -9,7 +9,7 @@ const MainView = ({ displayMessage, displayError }) => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const blogs = await blogService.getAll();
+      const blogs = await blogsService.getAll();
       setBlogs(blogs);
     };
     try {
@@ -26,6 +26,20 @@ const MainView = ({ displayMessage, displayError }) => {
     newBlogFormRef.current.toggleVisibility();
   };
 
+  const handleAddLike = async (blog) => {
+    try {
+      const updatedBlog = await blogsService.addLike(blog);
+      setBlogs(
+        blogs.map((b) =>
+          b.id === updatedBlog.id ? { ...updatedBlog, user: blog.user } : b,
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+      displayError('error adding like to blog');
+    }
+  };
+
   const newBlogFormRef = useRef();
   return (
     <div>
@@ -40,7 +54,7 @@ const MainView = ({ displayMessage, displayError }) => {
         />
       </Toggleable>
 
-      <BlogList blogs={blogs} />
+      <BlogList blogs={blogs} onAddLike={handleAddLike} />
     </div>
   );
 };
