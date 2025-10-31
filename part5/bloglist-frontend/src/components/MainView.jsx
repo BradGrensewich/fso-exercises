@@ -30,7 +30,10 @@ const MainView = ({ displayMessage, displayError }) => {
   return (
     <div>
       <h2>blogs</h2>
-      <Toggleable buttonLabel={'create new blog'} ref={newBlogFormRef}>
+      <Toggleable
+        buttonLabel='create new blog'
+        closeLabel='stop creating blog'
+        ref={newBlogFormRef}>
         <NewBlogForm
           onCreateBlog={handleCreateBlog}
           displayError={displayError}
