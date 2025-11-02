@@ -12,9 +12,14 @@ const Blog = ({ blog, onAddLike, onDeleteBlog, user }) => {
 
   return (
     <li style={blogStyle}>
-      {blog.title} {blog.author}
+      <span>{blog.title}</span> <span>{blog.author} </span>
       <Toggleable buttonLabel='view' closeLabel='hide'>
-        <BlogInfo blog={blog} onAddLike={onAddLike} onDeleteBlog={onDeleteBlog} user={user}/>
+        <BlogInfo
+          blog={blog}
+          onAddLike={onAddLike}
+          onDeleteBlog={onDeleteBlog}
+          user={user}
+        />
       </Toggleable>
     </li>
   );
