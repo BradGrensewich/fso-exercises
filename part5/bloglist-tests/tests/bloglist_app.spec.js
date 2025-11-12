@@ -29,7 +29,19 @@ describe('Blog app', () => {
 
     test('fails with wrong credentials', async ({ page }) => {
       await helper.loginWith(page, 'bradGrensewich', 'wrongpassword');
-      await expect(page.getByText('bradGrensewich is logged in')).not.toBeVisible()
+      await expect(
+        page.getByText('bradGrensewich is logged in'),
+      ).not.toBeVisible();
+    });
+  });
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+      await helper.loginWith(page, 'bradGrensewich', 'secretword');
+    });
+
+    test('a new blog can be created', async ({ page }) => {
+      await helper.createBlog(page, 'testblog', 'testblogger', 'testurl');
+      await expect(page.getByText('testblogger')).toBeVisible();
     });
   });
 });
