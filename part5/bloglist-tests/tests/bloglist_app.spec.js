@@ -44,4 +44,15 @@ describe('Blog app', () => {
       await expect(page.getByText('testblogger')).toBeVisible();
     });
   });
+  describe('When a user is logged in and creates a blog', () => {
+    beforeEach(async ({ page }) => {
+      await helper.loginWith(page, 'bradGrensewich', 'secretword');
+      await helper.createBlog(page, 'testblog', 'testblogger', 'testurl');
+    });
+    test('they can add a like to the blog', async ({page}) => {
+      await page.getByRole('button', { name: 'view' }).click();
+      await page.getByRole('button', { name: 'like' }).click();
+      await expect(page.getByText('likes: 1')).toBeVisible();
+    });
+  });
 });

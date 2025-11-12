@@ -14,7 +14,7 @@ const BlogInfo = ({ blog, onAddLike, onDeleteBlog, user }) => {
     <>
       <p>{blog.url}</p>
       <p>
-        likes: {blog.likes} <button onClick={addLike}>like</button>
+        <span>likes: {blog.likes}</span> <button onClick={addLike}>like</button>
       </p>
       <p>added by: {blog.user.username}</p>
       {ownedByUser && <button onClick={deleteBlog}>remove</button>}
