@@ -1,18 +1,20 @@
-const Hello = (props) => {
-  return (
-    <p>
-      Hello {props.name}. You are {props.age}
-    </p>
-  );
-};
+import { useState } from 'react';
+
+const Display = ({ counter }) => <div>{counter}</div>;
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 const App = () => {
-  const now = new Date();
-  const age = 2025 - 1993;
+  const [counter, setCounter] = useState(0);
+
+  const incrementCounter = () => setCounter(counter + 1);
+  const decrementCounter = () => setCounter(counter - 1);
+  const resetCounter = () => setCounter(0);
   return (
-    <div>
-      <Hello name='Brad' age={age} />
-      <p>It is {now.toString()}</p>
-    </div>
+    <>
+      <Display counter={counter} />
+      <Button onClick={incrementCounter} text='+' />
+      <Button onClick={decrementCounter} text='-' />
+      <Button onClick={resetCounter} text='Reset' />
+    </>
   );
 };
 

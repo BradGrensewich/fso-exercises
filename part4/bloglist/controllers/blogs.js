@@ -16,6 +16,7 @@ blogsRouter.post('/', async (request, response) => {
   const savedBlog = await blog.save();
   user.blogs = user.blogs.concat(savedBlog);
   await user.save();
+  console.log(savedBlog)
   return response.status(201).json(savedBlog);
 });
 
@@ -43,7 +44,7 @@ blogsRouter.put('/:id', async (request, response) => {
     return response.status(404).end();
   }
 
-  const { title, author, url, likes } = request.body;
+  const { title, author, url, likes, } = request.body;
 
   blog.title = title;
   blog.author = author;
