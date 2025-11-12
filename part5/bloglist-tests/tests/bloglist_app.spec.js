@@ -49,10 +49,21 @@ describe('Blog app', () => {
       await helper.loginWith(page, 'bradGrensewich', 'secretword');
       await helper.createBlog(page, 'testblog', 'testblogger', 'testurl');
     });
-    test('they can add a like to the blog', async ({page}) => {
+    test('they can add a like to the blog', async ({ page }) => {
       await page.getByRole('button', { name: 'view' }).click();
       await page.getByRole('button', { name: 'like' }).click();
       await expect(page.getByText('likes: 1')).toBeVisible();
+    });
+    test('they can delete that blog', async ({ page }) => {
+      //dialogue handler
+      page.on('dialog', async (dialog) => {
+        expect(dialog.type()).toBe('confirm');
+        await dialog.accept(); // Clicks "OK"
+      });
+
+      await page.getByRole('button', { name: 'view' }).click();
+      await page.getByRole('button', { name: 'remove' }).click();
+      await expect(page.getByText('successfully deleted "testblog"')).toBeVisible();
     });
   });
 });
