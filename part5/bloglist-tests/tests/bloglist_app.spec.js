@@ -50,7 +50,7 @@ describe('Blog app', () => {
       await helper.createBlog(page, 'testblog', 'testblogger', 'testurl');
     });
     test('they can add a like to the blog', async ({ page }) => {
-      await page.getByRole('button', { name: 'view' }).click();
+      await helper.openBlogInfo(page, 'testblog');
       await page.getByRole('button', { name: 'like' }).click();
       await expect(page.getByText('likes: 1')).toBeVisible();
     });
@@ -61,9 +61,32 @@ describe('Blog app', () => {
         await dialog.accept(); // Clicks "OK"
       });
 
-      await page.getByRole('button', { name: 'view' }).click();
+      await helper.openBlogInfo(page, 'testblog');
       await page.getByRole('button', { name: 'remove' }).click();
-      await expect(page.getByText('successfully deleted "testblog"')).toBeVisible();
+      await expect(
+        page.getByText('successfully deleted "testblog"'),
+      ).toBeVisible();
+    });
+  });
+
+  describe('when there are multiple blogs', () => {
+    beforeEach(async ({ page }) => {
+      await helper.loginWith(page, 'bradGrensewich', 'secretword');
+
+      await helper.createBlog(page, 'blog1', 'testblogger', 'testurl');
+      await helper.createBlog(page, 'blog2', 'testblogger', 'testurl');
+      await helper.createBlog(page, 'blog3', 'testblogger', 'testurl');
+    });
+    test.only('they are sorted by likes correctly', async ({ page }) => {
+      await helper.openBlogInfo(page, 'blog1');
+      await helper.openBlogInfo(page, 'blog2');
+      await helper.openBlogInfo(page, 'blog3');
+
+      await helper.addLike(page, 'blog2', 1);
+      await helper.addLike(page, 'blog2', 2);
+      await helper.addLike(page, 'blog3', 1);
+
+      await expect(page.locator('li').first().getByText('blog2')).toBeVisible();
     });
   });
 });
