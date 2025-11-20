@@ -4,12 +4,12 @@ import Filter from './Filter';
 import Anecdote from './Anecdote';
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(({ anecdotes, filter }) => {
-    return anecdotes
-      .filter((a) => a.content.includes(filter))
-      .sort((a, b) => b.votes - a.votes);
-  });
+  const { anecdotes, filter } = useSelector((state) => state);
   const dispatch = useDispatch();
+
+  const visibleAnecdotes = anecdotes
+    .filter((a) => a.content.includes(filter))
+    .sort((a, b) => b.votes - a.votes);
 
   const vote = (id) => {
     dispatch(voteForAnecdote(id));
@@ -19,7 +19,7 @@ const AnecdoteList = () => {
     <>
       <h2>Anecdotes</h2>
       <Filter />
-      {anecdotes.map((anecdote) => (
+      {visibleAnecdotes.map((anecdote) => (
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
