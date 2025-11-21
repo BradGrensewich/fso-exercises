@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { voteForAnecdote } from '../reducers/anecdoteReducer';
-import Filter from './Filter';
 import Anecdote from './Anecdote';
 
 const AnecdoteList = () => {
@@ -16,9 +15,7 @@ const AnecdoteList = () => {
   };
 
   return (
-    <>
-      <h2>Anecdotes</h2>
-      <Filter />
+    <>      
       {visibleAnecdotes.map((anecdote) => (
         <Anecdote
           key={anecdote.id}
