@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, useMatch } from 'react-router-dom';
 
 import AnecdoteList from './components/AnecdoteList';
 import About from './components/About';
 import Footer from './components/Footer';
 import CreateNew from './components/CreateNew';
 import Menu from './components/Menu';
-
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -46,6 +46,20 @@ const App = () => {
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
 
+  const match = useMatch('anecdotes/:id');
+  const anecdote = match
+    ? anecdotes.find((a) => (a.id = match.params.id))
+    : null;
+
+  const Anecdote = ({ anecdote }) => {
+    return (
+      <div>
+        <h2>{anecdote.content}</h2>
+        <div>has {anecdote.votes} votes</div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <h1>Software anecdotes</h1>
@@ -54,6 +68,10 @@ const App = () => {
         <Route path='/about' element={<About />} />
         <Route path='/create' element={<CreateNew addNew={addNew} />} />
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
+        <Route
+          path='/anecdotes/:id'
+          element={<Anecdote anecdote={anecdote} />}
+        />
       </Routes>
 
       <Footer />
