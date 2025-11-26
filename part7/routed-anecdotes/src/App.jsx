@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { Routes, Route, useMatch } from 'react-router-dom';
+import { Routes, Route, useMatch, useNavigate } from 'react-router-dom';
 
 import AnecdoteList from './components/AnecdoteList';
 import About from './components/About';
 import Footer from './components/Footer';
 import CreateNew from './components/CreateNew';
 import Menu from './components/Menu';
+import Anecdote from './components/Anecdote';
+import Notification from './components/Notification';
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -26,11 +28,17 @@ const App = () => {
     },
   ]);
 
+  const navigate = useNavigate();
   const [notification, setNotification] = useState('');
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
+    navigate('/');
+    setNotification(`Added "${anecdote.content}"`);
+    setTimeout(() => {
+      setNotification('');
+    }, 5000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -51,19 +59,11 @@ const App = () => {
     ? anecdotes.find((a) => (a.id = match.params.id))
     : null;
 
-  const Anecdote = ({ anecdote }) => {
-    return (
-      <div>
-        <h2>{anecdote.content}</h2>
-        <div>has {anecdote.votes} votes</div>
-      </div>
-    );
-  };
-
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification notification={notification} />
       <Routes>
         <Route path='/about' element={<About />} />
         <Route path='/create' element={<CreateNew addNew={addNew} />} />
