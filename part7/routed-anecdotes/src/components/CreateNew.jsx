@@ -1,20 +1,26 @@
-import { useField } from "../hooks" 
+import { useField } from '../hooks';
 
-const CreateNew = ({addNew}) => {
-    const content = useField('text')
-    const author = useField('text')
-    const info = useField('text')
-  
+const CreateNew = ({ addNew }) => {
+  const content = useField('text');
+  const author = useField('text');
+  const info = useField('text');
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     addNew({
       content: content.value,
       author: author.value,
       info: info.value,
-      votes: 0
-    })
-  }
+      votes: 0,
+    });
+  };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    content.reset();
+    author.reset();
+    info.reset();
+  };
 
   return (
     <div>
@@ -33,10 +39,10 @@ const CreateNew = ({addNew}) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
-  )
+  );
+};
 
-}
-
-export default CreateNew
+export default CreateNew;
