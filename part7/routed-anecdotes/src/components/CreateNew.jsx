@@ -1,9 +1,11 @@
 import { useField } from '../hooks';
 
 const CreateNew = ({ addNew }) => {
-  const content = useField('text');
-  const author = useField('text');
-  const info = useField('text');
+  const {reset: contentReset , ...content} = useField('text');
+  const {reset: authorReset , ...author} = useField('text');
+  const {reset: infoReset , ...info} = useField('text');
+
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,9 +19,9 @@ const CreateNew = ({ addNew }) => {
 
   const handleReset = (e) => {
     e.preventDefault();
-    content.reset();
-    author.reset();
-    info.reset();
+    contentReset()
+    authorReset();
+    infoReset();
   };
 
   return (
