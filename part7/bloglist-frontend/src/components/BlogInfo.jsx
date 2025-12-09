@@ -1,13 +1,17 @@
-const BlogInfo = ({ blog, onAddLike, onDeleteBlog, user }) => {
+import { useDispatch } from 'react-redux';
+import { addLikeToBlog, deleteBlog } from '../reducers/blogReducer';
+
+const BlogInfo = ({ blog, user }) => {
+  const dispatch = useDispatch();
   const ownedByUser = (user.id = blog.user.id);
 
   const addLike = () => {
-    onAddLike(blog);
+    dispatch(addLikeToBlog(blog));
   };
 
-  const deleteBlog = () => {
+  const remove = () => {
     if (window.confirm(`Remove blog: "${blog.title}" by ${blog.author}?`)) {
-      onDeleteBlog(blog);
+      dispatch(deleteBlog(blog));
     }
   };
   return (
@@ -17,7 +21,7 @@ const BlogInfo = ({ blog, onAddLike, onDeleteBlog, user }) => {
         <span>likes: {blog.likes}</span> <button onClick={addLike}>like</button>
       </p>
       <p>added by: {blog.user.username}</p>
-      {ownedByUser && <button onClick={deleteBlog}>remove</button>}
+      {ownedByUser && <button onClick={remove}>remove</button>}
     </>
   );
 };

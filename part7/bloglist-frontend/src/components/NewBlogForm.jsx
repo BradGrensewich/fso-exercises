@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import blogsService from '../services/blogs';
-import FormInput from './FormInput';
-import { displayError } from '../reducers/notificationReducer';
 
-const NewBlogForm = ({onCreateBlog}) => {
-  const dispatch = useDispatch()
+import { createNewBlog } from '../reducers/blogReducer';
+import FormInput from './FormInput';
+
+const NewBlogForm = ({ onCreatedBlog }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -13,17 +13,13 @@ const NewBlogForm = ({onCreateBlog}) => {
   const createBlog = async (event) => {
     event.preventDefault();
     const newBlog = { title, author, url };
-    try {
-      const savedBlog = await blogsService.create(newBlog);
-      onCreateBlog(savedBlog)
-      setAuthor('')
-      setTitle('')
-      setUrl('')
-    } catch (error) {
-      console.error(error)
-      dispatch(displayError('failed to add blog'))
 
-    }
+    dispatch(createNewBlog(newBlog));
+    setAuthor('');
+    setTitle('');
+    setUrl('');
+
+    onCreatedBlog();
   };
   return (
     <form onSubmit={createBlog}>

@@ -51,6 +51,7 @@ blogsRouter.put('/:id', async (request, response) => {
   blog.url = url;
   blog.likes = likes;
   const updatedBlog = await blog.save();
+  await updatedBlog.populate('user', { username: 1, name: 1 });
   return response.json(updatedBlog);
 });
 
