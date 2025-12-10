@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import blogService from './services/blogs';
-import { displayNotification } from './reducers/notificationReducer';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { logInFromStorage } from './reducers/userReducer';
 
 import LoginForm from './components/LoginForm';
 import MainView from './components/MainView';
@@ -10,30 +9,18 @@ import Notification from './components/Notification';
 
 const App = () => {
   const dispatch = useDispatch();
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    const loggedInUser = window.localStorage.getItem('user');
-    if (loggedInUser) {
-      const existingUser = JSON.parse(loggedInUser);
-      setUser(existingUser);
-      blogService.setToken(existingUser.token);
-      dispatch(displayNotification(`${existingUser.username} logged in`));
-    }
+    dispatch(logInFromStorage());
   }, [dispatch]);
-
-  const handleLogout = () => {
-    setUser(null);
-    window.localStorage.clear();
-    dispatch(displayNotification('User logged out'));
-  };
 
   return (
     <>
-      <UserInfo user={user} onLogout={handleLogout} />
+      <UserInfo />
       <Notification />
-      {!user && <LoginForm setUser={setUser} />}
-      {user && <MainView user={user} />}
+      {!user && <LoginForm />}
+      {user && <MainView />}
     </>
   );
 };

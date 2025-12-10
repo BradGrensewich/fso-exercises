@@ -1,9 +1,11 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addLikeToBlog, deleteBlog } from '../reducers/blogReducer';
 
-const BlogInfo = ({ blog, user }) => {
+const BlogInfo = ({ blog}) => {
   const dispatch = useDispatch();
-  const ownedByUser = (user.id = blog.user.id);
+  const user = useSelector(state => state.user)
+  
+  const ownedByUser = (user.id === blog.user.id);
 
   const addLike = () => {
     dispatch(addLikeToBlog(blog));

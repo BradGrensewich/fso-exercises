@@ -1,28 +1,18 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { displayNotification, displayError } from '../reducers/notificationReducer';
-import loginService from '../services/login';
-import blogsService from '../services/blogs';
+import { logIn } from '../reducers/userReducer';
 import FormInput from './FormInput';
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = () => {
   const dispatch = useDispatch()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const user = await loginService.login({ username, password });
-      window.localStorage.setItem('user', JSON.stringify(user));
-      blogsService.setToken(user.token);
-      setUser(user);
+    event.preventDefault();    
+      dispatch(logIn(username, password))
       setPassword('');
-      setUsername('');
-      dispatch(displayNotification(`${user.username} logged in`))
-    } catch (error) {
-      dispatch(displayError(error.message))
-    }
+      setUsername('');   
   };
   return (
     <form onSubmit={handleLogin}>

@@ -4,8 +4,9 @@ import { initializeBlogs } from '../reducers/blogReducer';
 
 import Blog from './Blog';
 
-const BlogList = ({ user }) => {
+const BlogList = () => {
   const dispatch = useDispatch();
+  
   const blogs = useSelector((state) => state.blogs);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const BlogList = ({ user }) => {
   return (
     <ul>
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} user={user} />
+        <Blog key={blog.id} blog={blog} />
       ))}
     </ul>
   );

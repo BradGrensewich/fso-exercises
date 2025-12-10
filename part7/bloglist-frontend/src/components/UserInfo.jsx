@@ -1,11 +1,17 @@
-const UserInfo = ({ user, onLogout }) => {
+import { useSelector, useDispatch } from 'react-redux';
+import { logOut } from '../reducers/userReducer';
+
+const UserInfo = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
   if (!user) {
     return null;
   }
   return (
     <div>
       {user.username} is logged in
-      <button onClick={onLogout}>logout</button>
+      <button onClick={() => dispatch(logOut())}>logout</button>
     </div>
   );
 };

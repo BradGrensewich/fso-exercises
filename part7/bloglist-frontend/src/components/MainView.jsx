@@ -4,7 +4,7 @@ import BlogList from './BlogList';
 import NewBlogForm from './NewBlogForm';
 import Toggleable from './Toggleable';
 
-const MainView = ({ user }) => {
+const MainView = () => {
   const handleCreatedBlog = () => {
     newBlogFormRef.current.toggleVisibility();
   };
@@ -20,7 +20,7 @@ const MainView = ({ user }) => {
         <NewBlogForm onCreatedBlog={handleCreatedBlog} />
       </Toggleable>
 
-      <BlogList user={user} />
+      <BlogList/>
     </div>
   );
 };
