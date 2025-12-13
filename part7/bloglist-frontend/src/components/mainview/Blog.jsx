@@ -1,8 +1,7 @@
 import BlogInfo from './BlogInfo';
-import Toggleable from './Toggleable';
+import Toggleable from '../ui/Toggleable';
 
 const Blog = ({ blog }) => {
-  
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../reducers/userReducer';
-import FormInput from './FormInput';
+import FormInput from './mainview/FormInput';
 
 const LoginForm = () => {
   const dispatch = useDispatch()

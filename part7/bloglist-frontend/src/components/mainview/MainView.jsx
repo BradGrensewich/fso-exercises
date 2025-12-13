@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import BlogList from './BlogList';
 import NewBlogForm from './NewBlogForm';
-import Toggleable from './Toggleable';
+import Toggleable from '../ui/Toggleable';
 
 const MainView = () => {
   const handleCreatedBlog = () => {
@@ -20,7 +20,7 @@ const MainView = () => {
         <NewBlogForm onCreatedBlog={handleCreatedBlog} />
       </Toggleable>
 
-      <BlogList/>
+      <BlogList />
     </div>
   );
 };

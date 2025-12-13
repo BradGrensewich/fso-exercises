@@ -5,23 +5,26 @@ import { initializeBlogs } from './reducers/blogReducer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import LoginForm from './components/LoginForm';
-import MainView from './components/MainView';
-import UserInfo from './components/UserInfo';
+import MainView from './components/mainview/MainView';
+import CurrentUserInfo from './components/CurrentUserInfo';
 import Notification from './components/Notification';
-import UsersView from './components/UsersView';
+import UsersView from './components/usersview/UsersView';
+import { initializeUsers } from './reducers/usersReducer';
+import UserInfo from './components/userview/UserInfo';
 
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-    
+
   useEffect(() => {
     dispatch(logInFromStorage());
     dispatch(initializeBlogs());
+    dispatch(initializeUsers());
   }, [dispatch]);
 
   return (
     <>
-      <UserInfo />
+      <CurrentUserInfo />
       <Notification />
 
       {!user && <LoginForm />}
@@ -30,6 +33,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<MainView />} />
             <Route path='/users' element={<UsersView />} />
+            <Route path='/users/:id' element={<UserInfo />} />
           </Routes>
         </Router>
       )}

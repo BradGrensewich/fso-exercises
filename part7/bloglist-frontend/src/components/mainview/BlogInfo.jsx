@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addLikeToBlog, deleteBlog } from '../reducers/blogReducer';
+import { addLikeToBlog, deleteBlog } from '../../reducers/blogReducer';
 
 const BlogInfo = ({ blog}) => {
   const dispatch = useDispatch();
