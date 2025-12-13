@@ -1,5 +1,4 @@
-import BlogInfo from './BlogInfo';
-import Toggleable from '../ui/Toggleable';
+import { Link } from 'react-router-dom';
 
 const Blog = ({ blog }) => {
   const blogStyle = {
@@ -12,10 +11,9 @@ const Blog = ({ blog }) => {
 
   return (
     <li style={blogStyle}>
-      <span>{blog.title}</span> <span>{blog.author} </span>
-      <Toggleable buttonLabel='view' closeLabel='hide'>
-        <BlogInfo blog={blog} />
-      </Toggleable>
+      <Link to={`/blogs/${blog.id}`}>
+        <span>{blog.title}</span> <span>{blog.author} </span>
+      </Link>
     </li>
   );
 };

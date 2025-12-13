@@ -11,6 +11,7 @@ import Notification from './components/Notification';
 import UsersView from './components/usersview/UsersView';
 import { initializeUsers } from './reducers/usersReducer';
 import UserInfo from './components/userview/UserInfo';
+import BlogInfo from './components/blogview/BlogInfo';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const App = () => {
             <Route path='/' element={<MainView />} />
             <Route path='/users' element={<UsersView />} />
             <Route path='/users/:id' element={<UserInfo />} />
+            <Route path='/blogs/:id' element={<BlogInfo />} />
           </Routes>
         </Router>
       )}
