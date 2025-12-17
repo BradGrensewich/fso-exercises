@@ -16,24 +16,25 @@ const create = async (newBlog) => {
   const config = { headers: { Authorization: token } };
   const response = await axios.post(baseUrl, newBlog, config);
   return response.data;
-  
 };
 
-const addLike = async (blog) => {
-  const changedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 };
+const updateBlog = async (changedBlog) => {
+  //change format of blog from populated FE version, to BE model
+  const formattedBlog = { ...changedBlog, user: changedBlog.user.id };
   const config = { headers: { Authorization: token } };
   const response = await axios.put(
-    `${baseUrl}/${blog.id}`,
-    changedBlog,
+    `${baseUrl}/${formattedBlog.id}`,
+    formattedBlog,
     config,
   );
   return response.data;
 };
 
+
 const deleteBlog = async (blog) => {
   const config = { headers: { Authorization: token } };
-  const response = await axios.delete(`${baseUrl}/${blog.id}`, config)
-  return response.data
-}
+  const response = await axios.delete(`${baseUrl}/${blog.id}`, config);
+  return response.data;
+};
 
-export default { getAll, create, setToken, addLike, deleteBlog };
+export default { getAll, create, setToken, updateBlog, deleteBlog };

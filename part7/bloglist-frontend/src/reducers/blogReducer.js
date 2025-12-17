@@ -12,7 +12,7 @@ const blogSlice = createSlice({
     appendBlog(state, action) {
       return state.concat(action.payload);
     },
-    increaseLikes(state, action) {
+    updateBlog(state, action) {
       const blog = action.payload;
       return state.map((b) => (b.id === blog.id ? blog : b));
     },
@@ -21,7 +21,7 @@ const blogSlice = createSlice({
     },
   },
 });
-const { setBlogs, appendBlog, increaseLikes, removeBlog } = blogSlice.actions;
+const { setBlogs, appendBlog, updateBlog, removeBlog } = blogSlice.actions;
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -41,7 +41,7 @@ export const createNewBlog = (content) => {
       dispatch(appendBlog(newBlog));
       dispatch(displayNotification('Blog added to DB'));
     } catch {
-         dispatch(displayError('failed to add blog'));
+      dispatch(displayError('failed to add blog'));
     }
   };
 };
@@ -49,12 +49,28 @@ export const createNewBlog = (content) => {
 export const addLikeToBlog = (blog) => {
   return async (dispatch) => {
     try {
-      const updatedBlog = await blogService.addLike(blog);
-      dispatch(increaseLikes(updatedBlog));
+      const updatedBlog = await blogService.updateBlog({
+        ...blog,
+        likes: blog.likes + 1,
+      });
+      dispatch(updateBlog(updatedBlog));
       dispatch(displayNotification(`liked "${blog.title}" by ${blog.author}`));
     } catch {
       dispatch(displayError('error adding like to blog'));
     }
+  };
+};
+
+export const addCommentToBlog = (blog, comment) => {
+  return async (dispatch) => {
+    const updatedBlog = await blogService.updateBlog({
+      ...blog,
+      comments: blog.comments.concat(comment),
+    });
+    dispatch(updateBlog(updatedBlog));
+    dispatch(
+      displayNotification(`comment added to "${blog.title}" by ${blog.author}`),
+    );
   };
 };
 

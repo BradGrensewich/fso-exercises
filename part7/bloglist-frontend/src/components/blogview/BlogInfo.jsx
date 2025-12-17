@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLikeToBlog, deleteBlog } from '../../reducers/blogReducer';
-import CommentList from './CommentList';
+import CommentSection from './CommentSection';
 
 const BlogInfo = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const BlogInfo = () => {
     return null;
   }
 
-  const ownedByUser = user.id === blog.user.id;
+  const ownedByUser = !!user && user.id === blog.user.id;
 
   const addLike = () => {
     dispatch(addLikeToBlog(blog));
@@ -35,7 +35,7 @@ const BlogInfo = () => {
       <p>Added by: {blog.user.username}</p>
 
       {ownedByUser && <button onClick={remove}>remove</button>}
-      <CommentList comments={blog.comments} />
+      <CommentSection blog={blog}/>
     </>
   );
 };

@@ -1,7 +1,6 @@
 const CommentList = ({ comments }) => {
   return (
-    <ul>
-      <h4>Comments:</h4>
+    <ul>      
       {comments.map((c) => (
         <li key={c}>{c}</li>
       ))}

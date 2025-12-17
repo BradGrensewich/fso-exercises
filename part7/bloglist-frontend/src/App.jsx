@@ -29,7 +29,7 @@ const App = () => {
       <Notification />
 
       {!user && <LoginForm />}
-      {user && (
+      { (
         <Routes>
           <Route path='/' element={<MainView />} />
           <Route path='/users' element={<UsersView />} />
