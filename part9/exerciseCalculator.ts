@@ -1,3 +1,5 @@
+import parser from './argumentParser';
+
 interface Results {
   periodLength: number;
   trainingDays: number;
@@ -27,7 +29,7 @@ const calculateExercises = (
   const results = {
     periodLength: hours.length,
     trainingDays: hours.reduce((acc, curr) => (curr != 0 ? acc + 1 : acc), 0),
-    average: hours.reduce((acc, curr) => curr + acc) / hours.length,
+    average: hours.reduce((acc, curr) => curr + acc, 0) / hours.length,
     target: dailyTargetHours,
     success: false,
     rating: 1,
@@ -39,5 +41,13 @@ const calculateExercises = (
 
   return results;
 };
-
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+  const { hours, dailyTargetHours } = parser.exerciseCalculator(process.argv);
+  console.log(calculateExercises(hours, dailyTargetHours));
+} catch (error: unknown) {
+  let errorMessage = 'something went wrong: ';
+  if (error instanceof Error) {
+    errorMessage += error.message;
+  }
+  console.log(errorMessage);
+}

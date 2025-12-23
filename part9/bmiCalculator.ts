@@ -1,3 +1,5 @@
+import parser from './argumentParser';
+
 const calculateBmi = (height: number, weight: number): string => {
   const isBetween = (low: number, num: number, high: number) => {
     return num > low && num <= high;
@@ -17,5 +19,13 @@ const calculateBmi = (height: number, weight: number): string => {
       return 'Bad input';
   }
 };
-
-console.log(calculateBmi(183, 79));
+try {
+  const { height, weight } = parser.bmiCalculator(process.argv);
+  console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+  let errorMessage = 'something went wrong: ';
+  if (error instanceof Error) {
+    errorMessage += error.message;
+  }
+  console.log(errorMessage);
+}
