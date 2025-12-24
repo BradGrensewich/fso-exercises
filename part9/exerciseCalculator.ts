@@ -1,4 +1,4 @@
-import parser from './argumentParser';
+import parser from './inputParser';
 
 interface Results {
   periodLength: number;

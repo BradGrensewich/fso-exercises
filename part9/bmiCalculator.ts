@@ -1,6 +1,6 @@
-import parser from './argumentParser';
+import parser from './inputParser';
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   const isBetween = (low: number, num: number, high: number) => {
     return num > low && num <= high;
   };
@@ -19,13 +19,16 @@ const calculateBmi = (height: number, weight: number): string => {
       return 'Bad input';
   }
 };
-try {
-  const { height, weight } = parser.bmiCalculator(process.argv);
-  console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-  let errorMessage = 'something went wrong: ';
-  if (error instanceof Error) {
-    errorMessage += error.message;
+
+if (require.main === module) {
+  try {
+    const { height, weight } = parser.getCmdArgsBmi(process.argv);
+    console.log(calculateBmi(height, weight));
+  } catch (error: unknown) {
+    let errorMessage = 'something went wrong: ';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }

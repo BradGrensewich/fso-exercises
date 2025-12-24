@@ -1,4 +1,6 @@
-const bmiCalculator = (args: string[]) => {
+import express from 'express';
+
+const getCmdArgsBmi = (args: string[]) => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
 
@@ -6,6 +8,19 @@ const bmiCalculator = (args: string[]) => {
     return {
       height: Number(args[2]),
       weight: Number(args[3]),
+    };
+  } else {
+    throw new Error('Provided values were not numbers!');
+  }
+};
+
+const getQueryParamsBmi = (args: express.Request['query']) => {
+  if (!args.height || !args.weight)
+    throw new Error('Need to provide height and weight');
+  if (!isNaN(Number(args.height)) && !isNaN(Number(args.weight))) {
+    return {
+      height: Number(args.height),
+      weight: Number(args.weight),
     };
   } else {
     throw new Error('Provided values were not numbers!');
@@ -34,6 +49,6 @@ const exerciseCalculator = (args: string[]) => {
   }
 };
 
-const parser = { bmiCalculator, exerciseCalculator };
+const parser = { getCmdArgsBmi, getQueryParamsBmi, exerciseCalculator };
 
 export default parser;
