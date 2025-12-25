@@ -22,7 +22,7 @@ const getRatingDescription = (rating: number): string => {
   return rating === 1 ? 'terrible' : rating === 2 ? 'good' : 'awesome';
 };
 
-const calculateExercises = (
+export const calculateExercises = (
   hours: number[],
   dailyTargetHours: number,
 ): Results => {
@@ -41,13 +41,16 @@ const calculateExercises = (
 
   return results;
 };
-try {
-  const { hours, dailyTargetHours } = parser.exerciseCalculator(process.argv);
-  console.log(calculateExercises(hours, dailyTargetHours));
-} catch (error: unknown) {
-  let errorMessage = 'something went wrong: ';
-  if (error instanceof Error) {
-    errorMessage += error.message;
+
+if (require.main === module) {
+  try {
+    const { hours, dailyTargetHours } = parser.exerciseCalculator(process.argv);
+    console.log(calculateExercises(hours, dailyTargetHours));
+  } catch (error: unknown) {
+    let errorMessage = 'something went wrong: ';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
