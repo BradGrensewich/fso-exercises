@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "David Byrne",
+    "dateOfBirth": "1986-07-12",
+    "ssn": "090786-632X",
+    "gender": "male",
+    "occupation": "Musician"
+}
