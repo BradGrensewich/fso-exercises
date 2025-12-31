@@ -1,8 +1,9 @@
-import express from 'express';
+import express, { Request } from 'express';
 import patientServices from '../services/patients';
 import { Response } from 'express';
-import { NonSensitivePatient, Patient } from '../types';
-import { toNewPatient } from '../../utils';
+import { NewPatient, NonSensitivePatient, Patient } from '../types';
+import parser from '../../middleware/parser';
+import errorHandler from '../../middleware/errorHandler';
 
 const router = express.Router();
 
@@ -10,18 +11,26 @@ router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
   res.send(patientServices.getNonSensitivePatients());
 });
 
-router.post('/', (req, res: Response<Patient | string> ) => {
-  try {
-    const newPatient = toNewPatient(req.body);
-    const addedPatient = patientServices.addPatient(newPatient);
-    res.status(201).json(addedPatient);
-  } catch (error: unknown) {
-    let errorMessage = 'Something went wrong :(';
-    if (error instanceof Error) {
-      errorMessage = 'Error: ' + error.message;
+router.post(
+  '/',
+  parser.newPatientParser,
+  (
+    req: Request<unknown, unknown, NewPatient>,
+    res: Response<Patient | string>,
+  ) => {
+    try {
+      const addedPatient = patientServices.addPatient(req.body);
+      res.status(201).json(addedPatient);
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong :(';
+      if (error instanceof Error) {
+        errorMessage = 'Error: ' + error.message;
+      }
+      res.status(400).send(errorMessage);
     }
-    res.status(400).send(errorMessage);
-  }
-});
+  },
+);
+
+router.use(errorHandler);
 
 export default router;
