@@ -1,16 +1,16 @@
 import express from 'express';
 import patientServices from '../services/patients';
 import { Response } from 'express';
-import { nonSensitivePatient } from '../types';
+import { NonSensitivePatient, Patient } from '../types';
 import { toNewPatient } from '../../utils';
 
 const router = express.Router();
 
-router.get('/', (_req, res: Response<nonSensitivePatient[]>) => {
+router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
   res.send(patientServices.getNonSensitivePatients());
 });
 
-router.post('/', (req, res) => {
+router.post('/', (req, res: Response<Patient | string> ) => {
   try {
     const newPatient = toNewPatient(req.body);
     const addedPatient = patientServices.addPatient(newPatient);
