@@ -1,4 +1,3 @@
-
 interface TotalProps {
     totalExercises: number
 }
