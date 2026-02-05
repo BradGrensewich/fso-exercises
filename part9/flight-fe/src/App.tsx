@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react';
-import {getAll} from './services/entryService';
+import { getAllEntries } from './services/entryService';
 import type { Entry } from './types';
 import EntryList from './components/EntryList';
+import EntryForm from './components/EntryForm';
 
 const App = () => {
   const [entries, setEntries] = useState<Entry[]>([]);
   useEffect(() => {
-    getAll().then((data) => {
+    getAllEntries().then((data) => {
       setEntries(data);
     });
   }, []);
 
+  const addEntry = (savedEntry: Entry) => {
+    setEntries(entries.concat(savedEntry))
+  }
+
   return (
     <div>
+      <EntryForm addEntry={addEntry} />
       <EntryList entries={entries} />
     </div>
   );
