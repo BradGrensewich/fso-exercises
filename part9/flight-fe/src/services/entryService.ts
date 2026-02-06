@@ -8,7 +8,15 @@ export const getAllEntries = () => {
 };
 
 export const createNewEntry = async (entry: NewEntry) => {
-  const response = await axios.post(baseUrl, entry);
-  console.log(response);
-  return response.data;
+  try {
+    const response = await axios.post(baseUrl, entry);
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data)
+    } else {
+      console.error(error);
+    }
+  }
 };
