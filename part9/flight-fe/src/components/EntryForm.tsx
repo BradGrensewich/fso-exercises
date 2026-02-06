@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import type { Entry } from '../types';
 import { createNewEntry } from '../services/entryService';
-import EntryFormInput from './EntryFormInput';
+import TextFormInput from './TextFormInput';
 import ErrorNotification from './ErrorNotification';
+import DateFormInput from './DateFormInput';
+import RadioFormInput from './RadioFormInput';
 
 interface EntryFormProps {
   addEntry: (value: Entry) => void;
@@ -36,22 +38,18 @@ const EntryForm = ({ addEntry }: EntryFormProps) => {
     <form onSubmit={submitForm}>
       <h3>Add new entry</h3>
       <ErrorNotification errorMessage={errorMessage} />
-      <EntryFormInput text={'date: '} value={date} setValue={setDate} />
-      <EntryFormInput
-        text={'weather: '}
-        value={weather}
-        setValue={setWeather}
-      />
-      <EntryFormInput
-        text={'visiblilty: '}
-        value={visibility}
+      <DateFormInput text={'date: '} value={date} setValue={setDate} />
+      <RadioFormInput
+        text={'visibility: '}
+        variant='visibility'
         setValue={setVisibility}
       />
-      <EntryFormInput
-        text={'comment: '}
-        value={comment}
-        setValue={setComment}
+      <RadioFormInput
+        text={'weather: '}
+        variant='weather'
+        setValue={setWeather}
       />
+      <TextFormInput text={'comment: '} value={comment} setValue={setComment} />
       <button>add</button>
     </form>
   );

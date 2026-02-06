@@ -1,12 +1,12 @@
 import type React from 'react';
 
-interface EntryFormInputProps {
+interface DateFormInputProps {
   text: string;
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const EntryFormInput = ({ text, value, setValue }: EntryFormInputProps) => {
+const DateFormInput = ({ text, value, setValue }: DateFormInputProps) => {
   const updateValue = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -17,10 +17,10 @@ const EntryFormInput = ({ text, value, setValue }: EntryFormInputProps) => {
     <div>
       <label>
         {text}
-        <input value={value} onChange={(e) => updateValue(e)} />
+        <input type="date" name="date" id="date" value={value} onChange={(e) => updateValue(e)}/>
       </label>
     </div>
   );
 };
 
-export default EntryFormInput;
+export default DateFormInput;
