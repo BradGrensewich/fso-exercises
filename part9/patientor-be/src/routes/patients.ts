@@ -11,6 +11,17 @@ router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
   res.send(patientServices.getNonSensitivePatients());
 });
 
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  const patient = patientServices
+    .getNonSensitivePatients()
+    .find((p) => p.id === id);
+  if (!patient) {
+    res.status(404).send('patient not found');
+  }
+  res.send(patient);
+});
+
 router.post(
   '/',
   parser.newPatientParser,
