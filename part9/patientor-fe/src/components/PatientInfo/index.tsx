@@ -1,4 +1,5 @@
-import { Patient } from '../types';
+import { Patient } from '../../types';
+import EntriesList from './EntriesList';
 
 interface PatientInfoProps {
   patient: Patient | null;
@@ -9,12 +10,12 @@ const PatientInfo = ({ patient }: PatientInfoProps) => {
   }
   return (
     <div>
-      <h3>{patient.name}</h3>
-
+      <h2>{patient.name}</h2>
       <ul>
         <li>DOB: {patient.dateOfBirth}</li>
         <li>Occupation: {patient.occupation}</li>
       </ul>
+      <EntriesList entries={patient.entries} />
     </div>
   );
 };
