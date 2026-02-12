@@ -1,33 +1,19 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useMatch, Route, Link, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Link, Routes } from 'react-router-dom';
 import { Button, Divider, Container, Typography } from '@mui/material';
 
-import { apiBaseUrl } from './constants';
-import { Patient } from './types';
-import patientService from './services/patients';
+import { useAppDispatch } from './hooks';
+import { initializeDiagnoses } from './reducers/diagnosisReducer';
+import { initialPatients } from './reducers/patientReducer';
 import PatientListPage from './components/PatientListPage';
 import PatientInfo from './components/PatientInfo';
 
 const App = () => {
-  const [patients, setPatients] = useState<Patient[]>([]);
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    void axios.get<void>(`${apiBaseUrl}/ping`);
-
-    const fetchPatientList = async () => {
-      const patients = await patientService.getAll();
-      setPatients(patients);
-    };
-    void fetchPatientList();
-  }, []);
-
-  //chekc for sinlge patient param route
-  const match = useMatch('/patients/:id');
-  const patientId = match?.params.id;
-  const patient = match
-    ? patients.find((p) => p.id === patientId) ?? null
-    : null;
+    dispatch(initialPatients());
+    dispatch(initializeDiagnoses());
+  }, [dispatch]);
 
   return (
     <div className='App'>
@@ -40,16 +26,8 @@ const App = () => {
         </Button>
         <Divider hidden />
         <Routes>
-          <Route
-            path='/'
-            element={
-              <PatientListPage patients={patients} setPatients={setPatients} />
-            }
-          />
-          <Route
-            path='/patients/:id'
-            element={<PatientInfo patient={patient} />}
-          />
+          <Route path='/' element={<PatientListPage />} />
+          <Route path='/patients/:id' element={<PatientInfo />} />
         </Routes>
       </Container>
     </div>

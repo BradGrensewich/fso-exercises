@@ -1,3 +1,4 @@
+import { useAppSelector } from '../../hooks';
 import { Entry } from '../../types';
 
 interface EntriesListItemProps {
@@ -5,6 +6,7 @@ interface EntriesListItemProps {
 }
 
 const EntriesListItem = ({ entry }: EntriesListItemProps) => {
+  const diagnoses = useAppSelector((state) => state.diagnoses);
   return (
     <li>
       <p>
@@ -13,7 +15,9 @@ const EntriesListItem = ({ entry }: EntriesListItemProps) => {
       </p>
       <ul>
         {entry.diagnosisCodes?.map((c) => (
-          <li key={c}>{c}</li>
+          <li key={c}>
+            {c} {diagnoses.find((d) => d.code === c)?.name}
+          </li>
         ))}
       </ul>
     </li>

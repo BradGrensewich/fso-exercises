@@ -2,17 +2,14 @@ import { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
 
-import { PatientFormValues, Patient } from '../../types';
+import { useAppDispatch } from '../../hooks';
+import { createPatient } from '../../reducers/patientReducer';
+import { PatientFormValues } from '../../types';
 import AddPatientModal from '../AddPatientModal';
-import patientService from '../../services/patients';
 import PatientTable from './PatientTable';
 
-interface Props {
-  patients: Patient[];
-  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
-}
-
-const PatientListPage = ({ patients, setPatients }: Props) => {
+const PatientListPage = () => {
+  const dispatch = useAppDispatch();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
@@ -25,8 +22,7 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
 
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
-      const patient = await patientService.create(values);
-      setPatients(patients.concat(patient));
+      dispatch(createPatient(values));
       setModalOpen(false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
@@ -54,7 +50,7 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
           Patient list
         </Typography>
       </Box>
-      <PatientTable patients={patients} />
+      <PatientTable />
       <AddPatientModal
         modalOpen={modalOpen}
         onSubmit={submitNewPatient}

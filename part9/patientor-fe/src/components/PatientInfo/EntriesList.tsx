@@ -6,6 +6,10 @@ interface EntriesListProps {
 }
 
 const EntriesList = ({ entries }: EntriesListProps) => {
+  if (entries.length === 0) {
+    return null;
+  }  
+
   return (
     <div>
       <h4>Entries</h4>

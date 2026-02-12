@@ -5,15 +5,13 @@ import {
   TableCell,
   TableBody,
 } from '@mui/material';
+import { useAppSelector } from '../../hooks';
 
 import PatientListItem from './PatientListItem';
 import { Patient } from '../../types';
 
-interface PatientTableProps {
-  patients: Patient[];
-}
-
-const PatientTable = ({ patients } : PatientTableProps) => {
+const PatientTable = () => {
+  const patients = useAppSelector((state) => state.patients);
   return (
     <Table style={{ marginBottom: '1em' }}>
       <TableHead>
