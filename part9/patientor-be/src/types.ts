@@ -1,45 +1,9 @@
 import z from 'zod';
-import { NewPatientSchema } from '../utils';
 
 export enum Gender {
   Male = 'male',
   Female = 'female',
   Other = 'other',
-}
-
-export interface Diagnosis {
-  code: string;
-  name: string;
-  latin?: string;
-}
-
-interface BaseEntry {
-  id: string;
-  description: string;
-  date: string;
-  specialist: string;
-  diagnosisCodes?: Array<Diagnosis['code']>;
-}
-
-export interface sickLeave {
-  startDate: string;
-  endDate: string;
-}
-
-interface OccupationalHealthcareEntry extends BaseEntry {
-  type: 'OccupationalHealthcare';
-  employerName: string;
-  sickLeave?: sickLeave;
-}
-
-export interface discharge {
-  date: string;
-  criteria: string;
-}
-
-interface HospitalEntry extends BaseEntry {
-  type: 'Hospital';
-  discharge: discharge;
 }
 
 export enum HealthCheckRating {
@@ -49,17 +13,59 @@ export enum HealthCheckRating {
   'CriticalRisk' = 3,
 }
 
-interface HealthCheckEntry extends BaseEntry {
-  type: 'HealthCheck';
-  healthCheckRating: HealthCheckRating;
-}
+const NewBaseEntrySchema = z.object({
+  description: z.string(),
+  date: z.string(),
+  specialist: z.string(),
+  diagnosisCodes: z.array(z.string()).optional(),
+});
 
-export type Entry =
-  | HealthCheckEntry
-  | HospitalEntry
-  | OccupationalHealthcareEntry;
+const SickLeaveSchema = z.object({
+  startDate: z.string(),
+  endDate: z.string(),
+});
 
+export const NewOccupationalHealthcareEntrySchema = NewBaseEntrySchema.extend({
+  type: z.literal('OccupationalHealthcare'),
+  employerName: z.string(),
+  sickLeave: SickLeaveSchema.optional(),
+});
+
+const DischargeSchema = z.object({
+  date: z.string(),
+  criteria: z.string(),
+});
+
+export const NewHospitalEntrySchema = NewBaseEntrySchema.extend({
+  type: z.literal('Hospital'),
+  discharge: DischargeSchema,
+});
+
+export const NewHealthCheckEntrySchema = NewBaseEntrySchema.extend({
+  type: z.literal('HealthCheck'),
+  healthCheckRating: z.enum(HealthCheckRating),
+});
+
+export const NewEntrySchema = z.discriminatedUnion('type', [
+  NewOccupationalHealthcareEntrySchema,
+  NewHospitalEntrySchema,
+  NewHealthCheckEntrySchema,
+]);
+
+export const NewPatientSchema = z.object({
+  name: z.string(),
+  dateOfBirth: z.iso.date(),
+  ssn: z.string(),
+  gender: z.enum(Gender),
+  occupation: z.string(),
+});
+
+export type NewEntry = z.infer<typeof NewEntrySchema>;
 export type NewPatient = z.infer<typeof NewPatientSchema>;
+
+export type Entry = NewEntry & {
+  id: string;
+};
 
 export interface Patient extends NewPatient {
   id: string;
