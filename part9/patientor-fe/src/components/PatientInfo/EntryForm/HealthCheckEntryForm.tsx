@@ -6,15 +6,19 @@ import {
   DialogContent,
   Alert,
 } from '@mui/material';
-import { useAppDispatch } from '../../hooks';
-import { createNewEntry } from '../../reducers/patientReducer';
-import { HealthCheckRating } from '../../types';
+import { useAppDispatch } from '../../../hooks';
+import { createNewEntry } from '../../../reducers/patientReducer';
+import { HealthCheckRating } from '../../../types';
 
-interface EntryFormProps {
+interface HealthCheckEntryFormProps {
   patientId: string;
+  setVariant: (value: string) => void;
 }
 
-const EntryForm = ({ patientId }: EntryFormProps) => {
+const HealthCheckEntryForm = ({
+  patientId,
+  setVariant,
+}: HealthCheckEntryFormProps) => {
   const dispatch = useAppDispatch();
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
@@ -43,6 +47,7 @@ const EntryForm = ({ patientId }: EntryFormProps) => {
           patientId,
         ),
       );
+      setVariant('');
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
@@ -106,8 +111,17 @@ const EntryForm = ({ patientId }: EntryFormProps) => {
         variant='contained'>
         Add
       </Button>
+      <Button
+        onClick={() => setVariant('')}
+        style={{
+          float: 'right',
+        }}
+        type='button'
+        variant='contained'>
+        cancel
+      </Button>
     </form>
   );
 };
 
-export default EntryForm;
+export default HealthCheckEntryForm;

@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppDispatch } from '../store';
 import {
   HealthCheckEntryFormValues,
+  HospitalEntryFormValues,
+  OccupationalHealthcareEntryFormValues,
   Patient,
   PatientFormValues,
 } from '../types';
@@ -42,7 +44,7 @@ export const createPatient = (content: PatientFormValues) => {
 };
 
 export const createNewEntry = (
-  content: HealthCheckEntryFormValues,
+  content: HealthCheckEntryFormValues | OccupationalHealthcareEntryFormValues | HospitalEntryFormValues,
   id: string,
 ) => {
   return async (dispatch: AppDispatch) => {
