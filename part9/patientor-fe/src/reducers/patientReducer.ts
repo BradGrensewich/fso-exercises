@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { AppDispatch } from '../store';
-import { Patient, PatientFormValues } from '../types';
+import {
+  HealthCheckEntryFormValues,
+  Patient,
+  PatientFormValues,
+} from '../types';
 import patientService from '../services/patients';
 
 const initialState: Patient[] = [];
@@ -14,10 +18,14 @@ const patientSlice = createSlice({
     appendPatient(state, action) {
       state.push(action.payload);
     },
+    updatePatient(state, action) {
+      const updated = action.payload;
+      return state.map((p) => (p.id === updated.id ? updated : p));
+    },
   },
 });
 
-const { setPatients, appendPatient } = patientSlice.actions;
+const { setPatients, appendPatient, updatePatient } = patientSlice.actions;
 
 export const initialPatients = () => {
   return async (dispatch: AppDispatch) => {
@@ -30,6 +38,16 @@ export const createPatient = (content: PatientFormValues) => {
   return async (dispatch: AppDispatch) => {
     const newPatient = await patientService.create(content);
     dispatch(appendPatient(newPatient));
+  };
+};
+
+export const createNewEntry = (
+  content: HealthCheckEntryFormValues,
+  id: string,
+) => {
+  return async (dispatch: AppDispatch) => {
+    const updatedPatient = await patientService.addEntry(content, id);
+    dispatch(updatePatient(updatedPatient));
   };
 };
 

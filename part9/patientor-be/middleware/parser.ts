@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { NewPatientSchema, NewEntrySchema } from '../src/types';
 
-
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
   try {
     NewPatientSchema.parse(req.body);

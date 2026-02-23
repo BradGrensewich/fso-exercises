@@ -1,26 +1,49 @@
-import axios from "axios";
-import { Patient, PatientFormValues } from "../types";
+import axios from 'axios';
+import {
+  Patient,
+  PatientFormValues,
+  HealthCheckEntryFormValues,
+} from '../types';
 
-import { apiBaseUrl } from "../constants";
+import { apiBaseUrl } from '../constants';
 
 const getAll = async () => {
-  const { data } = await axios.get<Patient[]>(
-    `${apiBaseUrl}/patients`
-  );
+  const { data } = await axios.get<Patient[]>(`${apiBaseUrl}/patients`);
 
   return data;
 };
 
 const create = async (object: PatientFormValues) => {
-  const { data } = await axios.post<Patient>(
-    `${apiBaseUrl}/patients`,
-    object
-  );
-
+  const { data } = await axios.post<Patient>(`${apiBaseUrl}/patients`, object);
   return data;
 };
 
-export default {
-  getAll, create
+const addEntry = async (object: HealthCheckEntryFormValues, id: string) => {
+  try {
+    const { data } = await axios.post<Patient>(
+    `${apiBaseUrl}/patients/${id}/entries`,
+    object,
+  );
+  return data;  
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.data) {
+        throw new Error(
+          typeof error.response.data === 'string'
+            ? error.response.data
+            : JSON.stringify(error.response.data)
+        );
+      }
+      throw new Error(error.message);
+    }
+
+    throw new Error('Unknown error occurred');
+  }
+  
 };
 
+export default {
+  getAll,
+  create,
+  addEntry,
+};

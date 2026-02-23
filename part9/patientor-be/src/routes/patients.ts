@@ -46,7 +46,6 @@ router.post<{ id: string }, unknown, NewEntry>(
   '/:id/entries',
   parser.newEntryParser,
   (req, res) => {
-    //get patient
     const id = req.params.id;
     const patient = patientServices.getPatients().find((p) => p.id === id);
     if (!patient) {

@@ -13,9 +13,15 @@ export enum HealthCheckRating {
   'CriticalRisk' = 3,
 }
 
+export interface Diagnosis {
+  code: string;
+  name: string;
+  latin?: string;
+}
+
 const NewBaseEntrySchema = z.object({
   description: z.string(),
-  date: z.string(),
+  date: z.iso.date(),
   specialist: z.string(),
   diagnosisCodes: z.array(z.string()).optional(),
 });
