@@ -1,29 +1,26 @@
 import { useState } from 'react';
 import EntryVariantSelector from './EntryVariantSeletor';
-import HealthCheckEntryForm from './HealthCheckEntryForm';
-import OccupationalHealthCareEntryForm from './OccupationalHealthCareEntryForm';
-import HospitalEntryForm from './HospitalEntryForm';
+import BaseEntryForm from './BaseEntryForm';
 
 interface EntryFormProps {
   patientId: string;
 }
 
+export type EntryType = 'HealthCheck' | 'Hospital' | 'OccupationalHealthcare' | '';
+
 const EntryForm = ({ patientId }: EntryFormProps) => {
-  const variants = ['HealthCheck', 'OccupationalHealthCare', 'Hospital'];
-  const [variant, setVariant] = useState<string>('');
+  const [variant, setVariant] = useState<EntryType>('');
 
-  switch (variant) {
-    case variants[0]:
-      return <HealthCheckEntryForm patientId={patientId} setVariant={setVariant} />;
-    case variants[1]:
-      return <OccupationalHealthCareEntryForm patientId={patientId} setVariant={setVariant} />;
-    case variants[2]:
-      return <HospitalEntryForm patientId={patientId} setVariant={setVariant} />;
-
-    default:
-      return (
-        <EntryVariantSelector setVariant={setVariant} variants={variants} />
-      );
+  if (variant === '') {
+    return <EntryVariantSelector setVariant={setVariant} />;
+  } else {
+    return (
+      <BaseEntryForm
+        patientId={patientId}
+        variant={variant}
+        setVariant={setVariant}
+      />
+    );
   }
 };
 

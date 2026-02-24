@@ -44,7 +44,10 @@ export const createPatient = (content: PatientFormValues) => {
 };
 
 export const createNewEntry = (
-  content: HealthCheckEntryFormValues | OccupationalHealthcareEntryFormValues | HospitalEntryFormValues,
+  content:
+    | HealthCheckEntryFormValues
+    | OccupationalHealthcareEntryFormValues
+    | HospitalEntryFormValues,
   id: string,
 ) => {
   return async (dispatch: AppDispatch) => {

@@ -1,17 +1,18 @@
+import type { EntryType } from ".";
+
 interface EntryVariantSelectorProps {
-    setVariant: (value: string) => void,
-    variants: string[]
+    setVariant: (value: EntryType) => void,
 } 
 
-const EntryVariantSelector = ({setVariant, variants}: EntryVariantSelectorProps) => {
+const EntryVariantSelector = ({setVariant}: EntryVariantSelectorProps) => {
   return (
     <div>
       <h4>Make a new entry:</h4>
-      <button onClick={() => setVariant(variants[0])}>Health Check</button>
-      <button onClick={() => setVariant(variants[1])}>
+      <button onClick={() => setVariant('HealthCheck')}>Health Check</button>
+      <button onClick={() => setVariant('OccupationalHealthcare')}>
         Occupational Health Care
       </button>
-      <button onClick={() => setVariant(variants[2])}>Hospital</button>
+      <button onClick={() => setVariant('Hospital')}>Hospital</button>
     </div>
   );
 };
